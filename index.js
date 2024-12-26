@@ -1,13 +1,15 @@
 const express = require('express');
 const { connectToMongoDB } = require('./connect');
 const path = require('path');
+
 const urlRoute = require('./routes/url');
 const staticRoute =require('./routes/staticRoute');
+const userRoute = require('./routes/user');
 
 const app = express();
 const port = 8000;
 
-connectToMongoDB('mongodb://localhost:27017/url-shortener').then(() => {
+connectToMongoDB('mongodb://127.0.0.1:27017/url-shortener').then(() => {
     console.log('Connected to MongoDB');
 }).catch((err) => {
     console.log('Failed to connect to MongoDB', err);
@@ -21,6 +23,7 @@ app.use(express.urlencoded({extended: false}));
 
 
 app.use('/url', urlRoute);
+app.use('/user',userRoute);
 app.use('/', staticRoute);
 
 app.listen(port, () => {
